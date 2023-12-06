@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl flex"> 
+
+        {% if request.user.is_authenticated %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-center items-center">
+            {% for item in items %}
+                <a href="{% url 'item:detail' item.id %}" class="item-link">
+                    <div class="item-container bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="item-image">
+                            <img src="{{ item.image }}" class="w-full h-52 object-cover rounded-t-lg transition-transform duration-300 transform-gpu hover:scale-105">
+                        </div>
+                        <div class="item-details p-4">
+                            <h2 class="text-lg font-semibold">{{ item.name }}</h2>
+                            <p class="text-gray-500">Price: {{ item.price }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div> 
+ 
+    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Categories</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-center items-center">
+            {% for category in categories %}
+                <a href="#" class="category-link">
+                    <div class="category-container bg-white rounded-lg shadow-md flex flex-col justify-between">
+                        <div class="category-details p-6">
+                            <h2 class="text-2xl">{{ category.name }}</h2>
+                            <p class="text-gray-500">{{ category.items.count }} items</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+
+        </div>
+        
+        {% else %}
+            <div class="lg:col-span-2 bg-gray-100 rounded-xl">
+                <img src="https://webstockreview.net/images/clipart-png-vegetable-14.png" class="w-60 h-60 rounded-xl">
+            </div>
+            <div class="lg:col-span-2 bg-gray-100 rounded-xl">
+                <div class="p-6">
+                    <div class="mb-6">
+                        <h1 class="text-2xl font-semibold mb-2">Log in to FreshZone</h1>
+                        <p class="text-gray-500">Get started with hassle-free shopping!</p>
+                    </div>
+                    <form method="post" action="{% url 'core:index' %}">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                            <input type="text" name="username" id="username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                            <input type="password" name="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                        </div>
+                        <!-- Add your reCAPTCHA field here -->
+                        <form action="" method="post" class="text-center mt-5">
+                            {% csrf_token%}
+                            {{form.captcha}}
+                            <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
+                        </form>
+                    </form>
+                    <p class="text-gray-500 mt-4">Don't have an account? <a href="{% url 'core:signup' %}" class="text-teal-500">Sign up here</a></p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <style>
+        /* Existing styles... */
+
+        /* Additional styles for responsiveness */
+        @media (max-width: 768px) {
+            .flex {
+                flex-direction: column;
+            }
+
+            .lg\:col-span-2 {
+                width: 100%;
+            }
+        }
+    </style>
+{% endblock %}
+

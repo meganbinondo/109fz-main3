@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<div class="w-1/2 my-6 mx-auto p-6 bg-gray-100 rounded-xl">
+    <h1 class="mb-6 text-3xl">Log in</h1>
+
+    <form method="post" action=".">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="inline-block mb-2">Username</label><br>
+            {{ form.username }}
+        </div>
+
+        <div class="mb-3">
+            <label class="inline-block mb-2">Password</label><br>
+            {{ form.password }}
+        </div>
+
+        {% if form.errors or form.non_field_errors %}
+            <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                {% for field in form %}
+                    {{ field.errors }}
+                {% endfor %}
+
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        {% if request.resolver_match.url_name != 'login' %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert text-center mt-5 alert-{{message.tags}}" >
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+
+        <form action="" method="post" class="text-center mt-5">
+            {% csrf_token%}
+            {{form.captcha}}
+            <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
+        </form>
+
+
+    </form>
+    <hr class="my-6 border-gray-300">
+    
+    <p class="text-gray-500"><strong>or Login with social media account:</strong></p>
+    <br>
+        <a href="{% url 'social:begin' 'facebook' %}" class="flex items-center justify-center space-x-2 py-2 px-4 bg-blue-700 text-white rounded-md hover:bg-blue-800">
+        <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M17.4 4H6.6C5.5 4 4.6 4.9 4.6 6v11c0 1.1.9 2 2 2h5.1v-5.9h-1.6v-2.3h1.6V9.8c0-1.6 1-2.5 2.5-2.5h1.9v2.3h-1c-.3 0-.6.3-.6.6v1.4h1.7l-.2 1.7h-1.5v5.9h3.1c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"></path>
+        </svg>
+        <span>Login with Facebook</span>
+        </a>
+</div>
+{% endblock %}

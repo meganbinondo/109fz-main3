@@ -1,0 +1,40 @@
+<!-- users/templates/users/update_profile.html -->
+{% extends 'core/base.html' %} <!-- Assuming you have a base template -->
+
+{% block content %}
+  <div class="container mx-auto mt-10">
+    <h2 class="text-2xl font-semibold mb-6">Update Profile</h2>
+
+    {% if messages %}
+    <div class="alert text-center mt-5 alert-{{ messages.tags }}">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {{ form.profile_picture }}
+      {{ form.fullname }}
+      {{ form.address }}
+      {{ form.phone_number }}
+
+      <div class="mt-4">
+        <label for="{{ form.edit_password.id_for_label }}">
+          <input type="checkbox" id="{{ form.edit_password.id_for_label }}" name="{{ form.edit_password.name }}">
+          Edit Password
+        </label>
+      </div>
+
+      {% if form.edit_password.value %}
+        {{ form.new_password }}
+        {{ form.confirm_new_password }}
+      {% endif %}
+
+      <button type="submit" class="mt-6 bg-teal-500 text-white py-2 px-4 rounded-xl">Update Profile</button>
+    </form>
+  </div>
+{% endblock %}

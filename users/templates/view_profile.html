@@ -1,0 +1,18 @@
+<!-- users/templates/users/view_profile.html -->
+{% extends 'core/base.html' %} <!-- Assuming you have a base template -->
+
+{% block content %}
+  <div class="container mx-auto mt-10 flex justify-center items-center flex-col"> <!-- Updated flex utility classes -->
+    <h2 class="text-2xl font-semibold mb-6">User Profile</h2>
+
+    <div class="flex justify-center items-center"> <!-- Centering for the profile picture label and image -->
+      {% if user_profile.profile_picture %}
+        <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" width="20%" height="20%">
+      {% endif %}
+    </div>
+
+    <p><strong>Full Name:</strong> {{ user_profile.fullname }}</p>
+    <p><strong>Address:</strong> {{ user_profile.address }}</p>
+    <p><strong>Phone Number:</strong> {{ user_profile.phone_number }}</p>
+  </div>
+{% endblock %}

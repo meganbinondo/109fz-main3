@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block title %}FreshZone - Purchases{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-semibold mb-6">My Purchases</h1>
+
+<div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+    <div>
+        <img src="{{ item.image.url }}" class="rounded-xl">
+    </div>
+    <div>
+        <h2 class="text-xl font-semibold mb-4">{{ item.name }}</h2>
+        <p class="text-gray-600 mb-4">Price: Php{{ item.price }}</p>
+        <p class="text-gray-600 mb-4">Quantity: {{ quantity }}</p>
+        <p class="text-gray-600 mb-4">Address: {{ address }}</p>
+        <p class="text-gray-600 mb-4">Payment Option: Cash-on-Delivery</p>
+        <p class="text-gray-600 mb-4">Region: {{ region }}</p>
+    <p class="text-gray-600 mb-4">Shipping Fee: Php{{ shipping_fee }}</p>
+    <p class="text-gray-600 mb-4">Total: Php{{ total }}</p>
+</div>
+{% endblock %}

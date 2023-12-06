@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+        <title>{% block title %}{% endblock %} | Online Marketplace</title>
+        <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/4003/4003655.png">
+        <style>
+            #mobile-menu {
+  /* Existing styles... */
+  left: 100;
+  right: 0;
+}
+        </style>
+    </head>
+
+    <body>
+        <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
+            <div class="flex items-center">
+                <img src="media/logoo.png" alt="Logo" class="mr-2 h-8 w-8">
+                <a href="/" class="text-xl font-semibold">FreshZone</a>
+            </div>
+        
+            <div class="lg:hidden">
+                <button type="button" id="menu-toggle" class="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700" aria-label="Toggle menu">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <div id="mobile-menu" class="hidden absolute z-10 bg-white rounded-xl shadow-md mt-2 py-2 w-48">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'conversation:inbox' %}" class="block px-4 py-2 text-lg font-semibold text-gray-700 hover:bg-gray-100">Inbox</a>
+                        <!-- <a href="{% url 'dashboard:index' %}" class="block px-4 py-2 text-lg font-semibold text-gray-700 hover:bg-gray-100">Dashboard</a> -->
+                        <a href="{% url 'core:logout' %}" class="block px-4 py-2 text-lg font-semibold text-gray-700 hover:bg-gray-100">Logout</a>
+                    {% else %}
+                        <a href="{% url 'core:signup' %}" class="block px-4 py-2 text-lg font-semibold text-gray-700 hover:bg-gray-100">Sign up</a>
+                        <a href="{% url 'core:login' %}" class="block px-4 py-2 text-lg font-semibold text-gray-700 hover:bg-gray-100">Log in</a>
+                    {% endif %}
+                </div>
+            </div>
+        
+            <div class="hidden lg:block space-x-6">
+                <!-- <a href="{% url 'item:new' %}" class="text-lg font-semibold hover:text-gray-500">New item</a> -->
+               
+        
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'item:items' %}" class="text-lg font-semibold hover:text-gray-500">Browse</a>
+                    <a class="text-lg font-semibold hover:text-gray-500" href="{% url 'transactions:user_purchases' %}">Transactions</a>
+                    <a href="{% url 'conversation:inbox' %}" class="text-lg font-semibold hover:text-gray-500">Inbox</a>
+                    <!-- <a href="{% url 'dashboard:index' %}" class="text-lg font-semibold hover:text-gray-500">Dashboard</a> -->
+                    <a href="{% url 'core:logout' %}" class="text-lg font-semibold bg-gray-500 text-white rounded-xl px-6 py-3 hover:bg-gray-700">Logout</a>
+                {% else %}
+                    <a href="{% url 'core:signup' %}" class="text-lg font-semibold bg-teal-500 text-white rounded-xl px-6 py-3 hover:bg-teal-700">Sign up</a>
+                    <a href="{% url 'core:login' %}" class="text-lg font-semibold bg-gray-500 text-white rounded-xl px-6 py-3 hover:bg-gray-700">Log in</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <div class="px-0 py-0 mt-3 mb-16">
+            {% block content %}
+            {% endblock %}
+        </div>
+        
+
+        <footer class="fixed bottom-0 inset-x-0 py-4 px-4 bg-gray-800 text-gray-400 text-center">
+            © Copyright 2023 Freshzone All Rights Reserved.
+        </footer>
+        
+    </body>
+</html>
+
+<script>
+    // JavaScript code to handle the dropdown menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>

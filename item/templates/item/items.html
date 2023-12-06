@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Items{% endblock %}
+
+{% block content %}
+    <div class="pb-6 bg-gray-100 rounded-xl">
+        <div class="grid grid-cols-4 gap-4 rounded-xl p-4">
+            <div class="col-span-1">
+                <form method="get" action="{% url 'item:items' %}">
+                    <input name="query" class="w-full py-4 px-6 border rounded-xl mb-4" type="text" value="{{ query }}" placeholder="Find fresh products here...">
+                    <button class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl">Search</button>
+                </form>
+
+                <hr class="my-6">
+
+                <div class="font-semibold">Categories</div>
+
+                <ul class="mb-6">
+                    {% for category in categories %}
+                        <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-gray-200{% endif %}">
+                            <a href="{% url 'item:items' %}?query={{ query }}&category={{ category.id }}">{{ category.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <hr class="my-6">
+
+                <div class="font-semibold">Clear filters</div>
+
+                <ul>
+                    <li>
+                        <a href="{% url 'item:items' %}" class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white">Clear</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-span-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-center items-center">
+                    {% for item in items %}
+                        <a href="{% url 'item:detail' item.id %}" class="item-link">
+                            <div class="item-container bg-white rounded-lg shadow-md overflow-hidden">
+                                <div class="item-image">
+                                    <img src="{{ item.image.url }}" class="w-full h-52 object-cover rounded-t-lg transition-transform duration-300 transform-gpu hover:scale-105">
+                                </div>
+                                <div class="item-details p-4">
+                                    <h2 class="text-lg font-semibold">{{ item.name }}</h2>
+                                    <p class="text-gray-500">Price: {{ item.price }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

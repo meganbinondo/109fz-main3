@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+
+{% block title %}FreshZone - Checkout{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-semibold mb-6">Checkout</h1>
+
+<div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+    <div>
+        <img src="{{ item.image.url }}" class="rounded-xl">
+    </div>
+    <div>
+        <h2 class="text-xl font-semibold mb-4">{{ item.name }}</h2>
+        <p class="text-gray-600 mb-4">Price: Php{{ item.price }}</p>
+    </div>
+
+    <form method="post" action="{% url 'checkout:purchases' item.id %}" class="mb-4">
+        {% csrf_token %}
+
+        <label for="region" class="block text-sm font-medium text-gray-700">Region:</label>
+        <select id="region" name="region" class="mt-1 p-2 border rounded-md w-full" required>
+            <option value="Luzon">Luzon</option>
+            <option value="Visayas">Visayas</option>
+            <option value="Mindanao">Mindanao</option>
+        </select>
+
+        <!-- Display the shipping fee based on the selected region -->
+        <p class="text-gray-600 mb-4">Shipping Fee: Php<span id="shipping-fee">0</span></p>
+
+        <label for="quantity" class="block text-sm font-medium text-gray-700 mt-4">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required class="mt-1 p-2 border rounded-md w-full">
+
+        <label for="address" class="block text-sm font-medium text-gray-700 mt-4">Address:</label>
+        <textarea id="address" name="address" rows="4" cols="50" required class="mt-1 p-2 border rounded-md w-full"></textarea>
+
+        <button type="submit" class="mt-4 bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-700 focus:outline-none focus:bg-teal-700">Buy (Cash On Delivery)</button>
+    </form>
+    {{paypal.render}}
+</div>
+
+<script>
+    // JavaScript to update the shipping fee based on the selected region
+    document.getElementById('region').addEventListener('change', function () {
+        var region = this.value;
+        var shippingFeeElement = document.getElementById('shipping-fee');
+
+        // Define shipping fees based on the region
+        var shippingFees = {'Luzon': 150, 'Visayas': 100, 'Mindanao': 50};
+
+        // Get the shipping fee based on the selected region
+        var shippingFee = shippingFees[region] || 0;
+
+        // Update the shipping fee in the HTML
+        shippingFeeElement.textContent = shippingFee;
+    });
+</script>
+
+{% endblock %}
